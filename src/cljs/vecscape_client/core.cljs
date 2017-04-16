@@ -31,6 +31,9 @@
             (recur))
           (print "Exiting old game loop")))))
 
+(defn add-entity! [db id e]
+  (swap! db assoc-in [:entities id] e))
+
 ;; -------------------------
 ;; Events
 
@@ -84,10 +87,11 @@
 ;; Initialize app
 
 (defn mount-root []
-  (let [db (reagent/atom (make-initial-db {:window [] :entities {"a" {:pos [0 0] :renderer :player :created (now)}}}))
+  (let [db (reagent/atom (make-initial-db {:window [] :entities {}}))
         resize-handler! (partial event-resize (reagent/cursor db [:window]))]
     (resize-handler! nil)
     (.addEventListener js/window "resize" resize-handler!)
+    (add-entity! db "a" {:pos [0 0] :renderer :player :created (now)})
     (launch-game-loop! db)
     (reagent/render [current-page db] (.getElementById js/document "app"))))
 
