@@ -58,8 +58,11 @@
    [:svg#canvas {:width (get-in @db [:window 0])
                  :height (get-in @db [:window 1])
                  :viewBox "-10.5 -6.75 21 9"}
-    (for [[id e] (get @db :entities)]
-      [(get renderers (e :renderer)) @db id e])]])
+    [:polygon {:points "-10.5,2.25 -6.93,-2.25 6.93,-2.25 10.5,2.25"
+               :fill "rgba(0,0,0,0.3)"
+               :on-click #(js/console.log "clicked!")}]
+    (doall (for [[id e] (get @db :entities)]
+             (with-meta [(get renderers (e :renderer)) @db id e] {:key id})))]])
 
 (defn about-page [db]
   [:div [:h2 "About vecscape-client"]
