@@ -44,9 +44,12 @@
 (def renderers
   {:player
    (fn [db id e]
+     (let [y-offset (* 0.08 (js/Math.sin (* 0.004 (- (e :timestmap) (db :timestamp)))))]
      [:g {:key id}
-      [:circle {:r 0.5 :cx 0 :cy (- -0.9 (* 0.08 (js/Math.sin (* 0.004 (- (e :timestmap) (db :timestamp)))))) :stroke-width 0.03 :stroke "#000000" :fill "white"}]
-      [:rect {:x -0.5 :y 0 :width 1 :height 0.2 :rx 0.2 :ry 0.2 :fill "rgba(0,0,0,0.2)"}]])})
+      [:circle {:r 0.5 :cx 0 :cy (- -0.9 y-offset) :stroke-width 0.03 :stroke "#000000" :fill "white"}]
+      [:line {:x1 -0.25 :y1 (- -1 y-offset) :x2 -0.1 :y2 (- -1.02 y-offset) :stroke-width 0.03 :stroke "#000000"}]
+      [:line {:x1 0.25 :y1 (- -1 y-offset) :x2 0.1 :y2 (- -1.02 y-offset) :stroke-width 0.03 :stroke "#000000"}]
+      [:rect {:x -0.5 :y 0 :width 1 :height 0.2 :rx 0.2 :ry 0.2 :fill "rgba(0,0,0,0.2)"}]]))})
 
 (defn game-page [db]
   [:div
